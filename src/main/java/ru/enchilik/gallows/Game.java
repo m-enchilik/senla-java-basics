@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import static ru.enchilik.gallows.Consts.gallows;
 
 public class Game {
+    // TODO: extract all "System.out.println" to the UI interface and it's CLI implementation
 
     private String word;
     private int hp = gallows.length;
