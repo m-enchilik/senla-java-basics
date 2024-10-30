@@ -1,10 +1,10 @@
 package ru.enchilik.gallows;
 
-import ru.enchilik.gallows.cli.CliGameInput;
+import ru.enchilik.gallows.cli.CliGameUI;
 
 public class App {
 
     public static void main(String[] args) {
-        new Game(new CliGameInput()).play();
+        new Game(new CliGameUI()).play();
     }
 }

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import static ru.enchilik.gallows.Consts.gallows;
 
 public class Game {
-    // TODO: extract all "System.out.println" to the UI interface and it's CLI implementation
 
     private String word;
     private int hp = gallows.length;
@@ -16,17 +15,17 @@ public class Game {
 
     private Set<Character> wordChars;
 
-    private final GameInput gameInput;
+    private final GameUI gameUI;
 
-    public Game(GameInput gameInput) {
-        this.gameInput = gameInput;
+    public Game(GameUI gameUI) {
+        this.gameUI = gameUI;
 
     }
 
     public void play() {
         enterTheWord();
         for (; ; ) {
-            char ch = gameInput.enterChar();
+            char ch = gameUI.enterChar();
             if (isExitCommand(ch)) {
                 return;
             }
@@ -34,11 +33,11 @@ public class Game {
             evaluateChar(ch);
             showState();
             if (failed()) {
-                System.out.println("Oooops... ");
+                gameUI.out("Oooops... ");
                 return;
             }
             if (won()) {
-                System.out.println("CONGRATULATIONS!!!");
+                gameUI.out("CONGRATULATIONS!!!");
                 return;
             }
         }
@@ -59,14 +58,15 @@ public class Game {
     }
 
     private void showStatistics() {
-        System.out.println("HP: " + hp);
+        gameUI.out("HP: " + hp);
     }
 
     private void showGuessedChars() {
+        StringBuilder sb = new StringBuilder();
         for (char ch : word.toCharArray()) {
-            System.out.print(enteredChars.contains(ch) ? ch : '_');
+            sb.append(enteredChars.contains(ch) ? ch : '_');
         }
-        System.out.println();
+        gameUI.out(sb.toString());
     }
 
     private void showImage() {
@@ -74,7 +74,7 @@ public class Game {
             return;
         }
 
-        System.out.println(gallows[gallows.length - 1 - hp]);
+        gameUI.out(gallows[gallows.length - 1 - hp]);
         // todo: implement this
     }
 
@@ -89,7 +89,7 @@ public class Game {
     }
 
     private void enterTheWord() {
-        word = gameInput.enterTheWord();
+        word = gameUI.enterTheWord();
         wordChars = word.chars()
                 .mapToObj(e->(char)e)
                 .collect(Collectors.toSet());

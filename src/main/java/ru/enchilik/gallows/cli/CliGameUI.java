@@ -1,13 +1,13 @@
 package ru.enchilik.gallows.cli;
 
 
-import ru.enchilik.gallows.GameInput;
+import ru.enchilik.gallows.GameUI;
 
 import java.util.Scanner;
 
 import static ru.enchilik.gallows.Consts.validCharacters;
 
-public class CliGameInput implements GameInput {
+public class CliGameUI implements GameUI {
     private final String wordMustHave = "Данная игра для двух игроков, один игрок загадывает слово, другой его отгадывает." +
             "\nМаленькое правило ввода слова и букв:" +
             "\n1. Слово должно состоять из кириллицы и не менее 3-х букв. " +
@@ -50,6 +50,11 @@ public class CliGameInput implements GameInput {
             }
             System.out.println("Что-то пошло не так.");
         }
+    }
+
+    @Override
+    public void out(String message) {
+        System.out.println(message);
     }
 
     private boolean wordCheck(String word) {
