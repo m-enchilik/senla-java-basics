@@ -3,7 +3,6 @@ package ru.enchilik.currency;
 import java.util.Scanner;
 
 public class WorkingWithConsole {
-    private final String exitText = "Чтобы выйти из приложения, наберите любое отрицательное число в любое время.";
     private final String textCurrencyCode = "\nКоды валют: " + "\n"
             + "USD - 0, EUR - 1, RUB - 2, CNY - 3, KZT - 4";
     private String incorrectData = "\nВведенные данные неверны. Начните сначала.";
@@ -20,8 +19,6 @@ public class WorkingWithConsole {
 
     public void inputToExchange() {
         while (true) {
-            System.out.println("\n" + exitText);
-
             System.out.println(textCurrencyCode);
 
             Integer inner = currencyToExchange();
@@ -30,25 +27,8 @@ public class WorkingWithConsole {
             Double amount = enterTheSum();
             if (amount == null) continue;
 
-            Integer outer = exchangeForCurrency();
-            if (outer == null) continue;
-
-            Double yourMoney = operationsAndExchange.exchangeCurrency(inner, outer, amount);
-            if (yourMoney == null) continue;
-            System.out.println("\n" + "Теперь у вас есть " + yourMoney + " " + currencies[outer] + "\n");
+            operationsAndExchange.exchangeCurrency(inner, amount);
         }
-    }
-
-    private Integer exchangeForCurrency() {
-        System.out.print("\nВведите код валюты, которую хотите получить: ");
-        temp = scanner.nextLine();
-        if (!isInteger(temp)){
-            System.out.println(incorrectData);
-            return null;
-        }
-        int outer = Integer.parseInt(temp);
-        if (isIncorrectCodeCurrency(outer)) return null;
-        return outer;
     }
 
     private Double enterTheSum() {
@@ -60,7 +40,7 @@ public class WorkingWithConsole {
         }
         double amount = Double.parseDouble(temp);
         isExit(amount);
-        if(amount < 0.01){
+        if (amount < 0.01) {
             System.out.println("Недостаточно денег для операции.");
             return null;
         }
@@ -68,15 +48,19 @@ public class WorkingWithConsole {
     }
 
     private Integer currencyToExchange() {
-        System.out.print("\nВведите код валюты, которую хотите обменять: ");
+        System.out.print("\nВведите код вашей валюты: ");
         temp = scanner.nextLine();
-        if (!isInteger(temp)){
+        if (!isInteger(temp)) {
             System.out.println(incorrectData);
             return null;
         }
         int inner = Integer.parseInt(temp);
         isExit(inner);
         if (isIncorrectCodeCurrency(inner)) return null;
+        if (currencies[inner].getVal() == 0) {
+            System.out.println("Курс для данной валюты не установлен.");
+            return null;
+        }
         return inner;
     }
 
@@ -109,5 +93,4 @@ public class WorkingWithConsole {
     public void isExit(double value) {
         if (value < 0) System.exit(-1);
     }
-
 }

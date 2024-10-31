@@ -75,7 +75,6 @@ public class Game {
         }
 
         gameUI.out(gallows[gallows.length - 1 - hp]);
-        // todo: implement this
     }
 
     private boolean isExitCommand(char ch) {

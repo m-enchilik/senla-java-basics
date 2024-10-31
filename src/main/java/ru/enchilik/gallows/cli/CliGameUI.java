@@ -3,18 +3,18 @@ package ru.enchilik.gallows.cli;
 
 import ru.enchilik.gallows.GameUI;
 
+import java.util.Random;
 import java.util.Scanner;
 
+import static ru.enchilik.gallows.Consts.dictionary;
 import static ru.enchilik.gallows.Consts.validCharacters;
 
 public class CliGameUI implements GameUI {
-    private final String wordMustHave = "Данная игра для двух игроков, один игрок загадывает слово, другой его отгадывает." +
-            "\nМаленькое правило ввода слова и букв:" +
-            "\n1. Слово должно состоять из кириллицы и не менее 3-х букв. " +
-            "\n2. Не должно быть символов и цифр." +
-            "\n3. Буквы вводить по одной и по вышеуказанным правилам." +
+    private final String wordMustHave = "\nМаленькое правило ввода слова и букв:" +
+            "\n1. Слово состоит из кириллицы и не менее 3-х букв. " +
+            "\n2. В слове нет символов и цифр." +
+            "\n3. Буквы (кириллицу) вводить по одной." +
             "\n4. Для выхода наберите 0 в любом месте игры.";
-    private final String firstPlayersMove = "Загадайте слово (набрав его на клавиатуре):";
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -38,34 +38,16 @@ public class CliGameUI implements GameUI {
 
     @Override
     public String enterTheWord() {
-        while (true) {
-            System.out.println(wordMustHave);
-            System.out.println(firstPlayersMove);
-            String word = scanner.nextLine().toLowerCase();
-            if (!word.isEmpty() && '0' == word.charAt(0)) {
-                System.exit(0);
-            }
-            if (wordCheck(word)) {
-                return word;
-            }
-            System.out.println("Что-то пошло не так.");
-        }
+        System.out.println(wordMustHave);
+        Random random = new Random();
+        int numOfWord = random.nextInt(dictionary.length);
+        String word = dictionary[numOfWord].toLowerCase();
+        return word;
     }
 
     @Override
     public void out(String message) {
         System.out.println(message);
-    }
-
-    private boolean wordCheck(String word) {
-        if (word.length() < 3){
-            return false;
-        }
-        String regex = "[а-я]*";
-        if (word.matches(regex)) {
-            return true;
-        }
-        return false;
     }
 
     private boolean isValidInput(char input) {
